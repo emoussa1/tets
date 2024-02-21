@@ -33,4 +33,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           release_tag=${GITHUB_REF:10}
-          echo "::set-output name=tag::$release_tag"
+          echo ${GITHUB_REF:10}
