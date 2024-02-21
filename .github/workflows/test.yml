@@ -1,0 +1,37 @@
+name: Deploy Central ECR staging and prod
+
+on:
+  release:
+    types: ["prereleased"]
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  id-token: write
+  issues: write
+  discussions: write
+  packages: write
+  pages: write
+  pull-requests: write
+
+env:
+
+jobs:
+  get-release-tag:
+    name: Get Release Tag
+    runs-on: ubuntu-20.04
+    environment: stage
+    outputs:
+      release-tag: ${{ steps.vars.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: get release tag
+        id: vars
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          release_tag=${GITHUB_REF:10}
+          echo "::set-output name=tag::$release_tag"
